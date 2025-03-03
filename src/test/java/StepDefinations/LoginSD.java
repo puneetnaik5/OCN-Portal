@@ -2,12 +2,16 @@ package StepDefinations;
 import Pages.BasePage;
 import Hooks.hooks;
 import io.cucumber.java.en.And;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.Assert;
 import pages.Login;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
+
+import java.io.File;
 
 
 public class LoginSD {
@@ -71,6 +75,7 @@ public class LoginSD {
         String actualText= login.getTextofSighnout();
         Assert.assertEquals(expectedText, actualText);
         System.out.println("ActualText"+actualText+ "  "+expectedText);
+        login.captureScreenshot("Login_Success");
     }
 
     @Then("User Clicks on SignOut")

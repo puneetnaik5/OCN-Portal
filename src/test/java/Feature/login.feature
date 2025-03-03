@@ -10,7 +10,7 @@ Feature: To Test Login Functionality
     And User waits for 5000 milliseconds
     Then An alert with message "Provided E-Mail is already in use" should be displayed and accepted
 
-
+    @sanity
     Scenario: Verify SignIn and SignOut Functionality
       Given User click on Get Started
       When User clicks on Already have an account link below

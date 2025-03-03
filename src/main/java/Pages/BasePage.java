@@ -1,15 +1,22 @@
 package Pages;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
+import java.util.logging.Logger;
 ;
 
 public class BasePage {
+
+    private static final Logger logger = Logger.getLogger(BasePage.class);
     protected WebDriver driver;
 
     public BasePage(WebDriver driver) {
@@ -87,6 +94,50 @@ public class BasePage {
         } catch (Exception e) {
             System.err.println("Error getting text from element with locator: " + locator + ". Error Message: " + e.getMessage());
             return "";
+        }
+    }
+
+
+
+//    public void captureScreenshot(String fileName) {
+//        String filePath = "C:\\Users\\neo\\Desktop\\New folder\\AMN\\target\\Screenshot\\" + fileName + ".png";
+//
+//        File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+//        File destFile = new File(filePath);
+//
+//        try {
+//            FileUtils.copyFile(srcFile, destFile);
+//            System.out.println("Screenshot saved at: " + destFile.getAbsolutePath());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    public void captureScreenshot(String fileName) {
+        String projectPath = System.getProperty("user.dir");
+        String screenshotPath = projectPath + "/target/Screenshot/";
+        File screenshotDir = new File(screenshotPath);
+        if (!screenshotDir.exists()) {
+            screenshotDir.mkdirs();
+        }
+
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String filePath = screenshotPath + fileName + "_" + timestamp + ".png";
+
+        if (driver instanceof TakesScreenshot) {
+            File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            File destFile = new File(filePath);
+
+            try {
+                FileUtils.copyFile(srcFile, destFile);
+                logger.info("Screenshot saved at: " + destFile.getAbsolutePath());
+            } catch (IOException e) {
+                logger.severe("Error saving screenshot: " + e.getMessage());
+                logger.severe("Exception details:"+ e); // Log the exception itself
+            }
+        } else {
+            logger.severe("Driver does not support screenshots.");
         }
     }
 
